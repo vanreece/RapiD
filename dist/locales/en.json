@@ -859,6 +859,9 @@
             "imagery_problem_faq": "Report an Imagery Problem",
             "reset": "reset",
             "reset_all": "Reset All",
+            "feature_confidence": "Feature Confidence",
+            "reset_confidence": "Reset Confidence",
+            "confidence_description": "Sets the confidence level for applicable AI predictions (a low confidence score will increase the number of predictions, but they may be of lesser quality).",
             "display_options": "Display Options",
             "brightness": "Brightness",
             "contrast": "Contrast",
@@ -11071,13 +11074,6 @@
                 },
                 "description": "Orthophotos from the municipality of Stockholm 2016, CC0 license",
                 "name": "Stockholm Orthophoto"
-            },
-            "susono_shizuoka_jp_orthophoto": {
-                "attribution": {
-                    "text": "Susono city orthophoto"
-                },
-                "description": "The aerial photos released by Susono City as open data.",
-                "name": "Susono city orthophoto"
             },
             "tf-cycle": {
                 "attribution": {

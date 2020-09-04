@@ -33,7 +33,8 @@ function tileURL(dataset, extent, taskExtent) {
         theme: 'ml_road_vector',
         collaborator: 'fbid',
         token: 'ASZUVdYpCkd3M6ZrzjXdQzHulqRMnxdlkeBJWEKOeTUoY_Gwm9fuEd2YObLrClgDB_xfavizBsh0oDfTWTF7Zb4C',
-        hash: 'ASYM8LPNy8k1XoJiI7A'
+        hash: 'ASYM8LPNy8k1XoJiI7A',
+        v: 2
     };
 
     if (datasetID === 'fbRoads') {
@@ -193,11 +194,15 @@ function parseXML(dataset, xml, tile, callback, options) {
         }
 
         var entity = parser(child, uid);
+        var fbMeta = {
+            fbConfidence: child.attributes.fb_confidence ? child.attributes.fb_confidence.value : null,
+        };
         var meta = {
             __fbid__: child.attributes.id.value,
             __origid__: origUid,
             __service__: 'fbml',
-            __datasetid__: dataset.id
+            __datasetid__: dataset.id,
+            __fb_meta__: fbMeta,
         };
         return Object.assign(entity, meta);
     }
@@ -327,6 +332,11 @@ export default {
                     if (!dom) return;
                     parseXML(ds, dom, tile, function(err, results) {
                         if (err) return;
+                        // results.forEach((result) => {
+                        //     if (result.type === 'way') {
+                        //         result.ml_confidence = Math.random();
+                        //     }
+                        // });
                         graph.rebase(results, [graph], true);
                         tree.rebase(results, true);
                         cache.loaded[tile.id] = true;

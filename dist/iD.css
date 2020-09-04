@@ -4381,6 +4381,17 @@ hide this one and style something on top of it.  */
 .ideditor li.best > label > span.best > svg {
     color: #e98733;
     height: 19px;
+
+}
+
+.ideditor .feature-confidence-container {
+    padding: 10px; 
+}
+
+.ideditor .display-control-feature_confidence > input{
+    -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+            transform: rotate(180deg);
 }/* Basics
 ------------------------------------------------------- */
 /* the root element of iD */

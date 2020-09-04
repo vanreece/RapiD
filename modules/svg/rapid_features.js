@@ -6,6 +6,8 @@ import { services } from '../services';
 import { svgPath, svgPointTransform } from './index';
 import { utilStringQs } from '../util';
 
+import { prefs } from '../core/preferences';
+
 let _enabled = false;
 let _initialized = false;
 let _FbMlService;
@@ -240,12 +242,19 @@ export function svgRapidFeatures(projection, context, dispatch) {
     if (context.map().zoom() >= context.minEditableZoom()) {
       /* Facebook AI/ML */
       if (dataset.service === 'fbml') {
-
+        const featureConfidence = prefs('feature_confidence');
         service.loadTiles(internalID, projection, rapidContext.getTaskExtent());
         let pathData = service
           .intersects(internalID, context.map().extent())
           .filter(d => d.type === 'way' && !_actioned.has(d.id) && !_actioned.has(d.__origid__) )  // see onHistoryRestore()
-          .filter(getPath);
+          .filter(getPath)
+          .filter(d => {
+            if (d.type !== 'way') {
+              return true;
+            }
+            // Only show roads that exceed our feature confidence threshold
+            return d.__fb_meta__.fbConfidence && d.__fb_meta__.fbConfidence >= featureConfidence;
+          });
 
         // fb_ai service gives us roads and buildings together,
         // so filter further according to which dataset we're drawing

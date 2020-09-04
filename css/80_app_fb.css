@@ -930,4 +930,13 @@ li.best > label > span.best {
 li.best > label > span.best > svg {
     color: #e98733;
     height: 19px;
+
+}
+
+.feature-confidence-container {
+    padding: 10px; 
+}
+
+.display-control-feature_confidence > input{
+    transform: rotate(180deg);
 }
