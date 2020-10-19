@@ -4269,6 +4269,10 @@ hide this one and style something on top of it.  */
     color: #e98733;
     height: 19px;
 }
+
+.ideditor .feature-confidence-container {
+    padding: 10px; 
+}
 /* Basics
 ------------------------------------------------------- */
 /* the root element of iD */
