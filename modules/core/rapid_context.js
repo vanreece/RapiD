@@ -24,7 +24,7 @@ export function coreRapidContext() {
       }
   };
 
-  var taskExtent;
+  let _taskExtent;
   _rapidContext.setTaskExtentByGpxData = function(gpxData) {
       var dom = (new DOMParser()).parseFromString(gpxData, 'text/xml');
       var gj = toGeoJSON.gpx(dom);
@@ -76,13 +76,12 @@ export function coreRapidContext() {
                   }
               }
           });
-          taskExtent = new geoExtent([minlon, minlat], [maxlon, maxlat]);
+          _taskExtent = new geoExtent([minlon, minlat], [maxlon, maxlat]);
           dispatch.call('task_extent_set');
       }
   };
 
   /* Task extents */
-  let _taskExtent;
   let _isTaskBoundsRect = undefined;
 
   _rapidContext.setTaskExtentByGpxData = function(gpxData) {
