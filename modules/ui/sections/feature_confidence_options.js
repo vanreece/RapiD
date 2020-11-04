@@ -19,36 +19,33 @@ export function uiSectionFeatureConfidenceOptions(context) {
     var _maxVal = 1;
     var _storedConfidence = prefs('feature_confidence');
     var _sliders = ['feature_confidence'];
+    var _defaultConfidence = _minVal;
 
-    var _options = {
-        confidence: (_storedConfidence !== null ? (+_storedConfidence) : 1)
-    };
+    var _featureConfidence = _storedConfidence !== null ? (+_storedConfidence) : _defaultConfidence;
 
     function clamp(x, min, max) {
         return Math.max(min, Math.min(x, max));
     }
 
-    function updateValue(d, val) {
+    function updateValue(val) {
         if (!val && d3_event && d3_event.target) {
             val = d3_event.target.value;
         }
 
         val = clamp(val, _minVal, _maxVal);
 
-        _options[d] = val;
-        context.rapidContext().featureConfidence(val);
-
-
-        if (d === 'feature_confidence') {
-            prefs('feature_confidence', val);
-        }
+        _featureConfidence = val;
+        prefs('feature_confidence', val);
+        context.rapidContext().featureConfidence(_featureConfidence);
+        //Update the render
+        context.map().pan([0,0]);
 
         section.reRender();
     }
 
     function renderDisclosureContent(selection) {
-        var container = selection.selectAll('.feature-confidence-container')
-            .data([0]);
+        var container = selection.selectAll('.feature-confidence-container');
+        container = container.data([0]);
 
         var containerEnter = container.enter()
             .append('div')
@@ -80,34 +77,33 @@ export function uiSectionFeatureConfidenceOptions(context) {
             .attr('min', _minVal)
             .attr('max', _maxVal)
             .attr('step', '0.20')
-            .on('input', function(d) {
+            .property('value', _featureConfidence)
+            .on('input', function() {
                 var val = d3_select(this).property('value');
-                updateValue(d, val);
+                updateValue(val);
             });
 
         slidersEnter
             .append('button')
             .attr('title', t('background.reset_confidence'))
             .attr('class', function(d) { return 'display-option-reset display-option-reset-' + d; })
-            .on('click', function(d) {
+            .on('click', function() {
                 if (d3_event.button !== 0) return;
-                updateValue(d, 1);
+                updateValue(_defaultConfidence);
             })
             .call(svgIcon('#iD-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
 
+        container = selection.selectAll('.feature-confidence-container');
         container.selectAll('.display-option-input')
-            .property('value', function(d) { return _options[d]; });
+            .property('value', _featureConfidence);
 
         container.selectAll('.display-option-value')
-            .text(function(d) { return Math.floor(_options[d] * 100) + '%'; });
+            .text(function() { return Math.floor(_featureConfidence * 100) + '%'; });
 
         container.selectAll('.display-option-reset')
-            .classed('disabled', function(d) { return _options[d] === 1; });
-
-        // first time only, set brightness if needed
-        if (containerEnter.size() && _options.brightness !== 1) {
-            context.background().brightness(_options.brightness);
-        }
+            .classed('disabled', function() { return _featureConfidence === _defaultConfidence; });
+        
+        context.rapidContext().featureConfidence(_featureConfidence);
     }
 
     return section;
