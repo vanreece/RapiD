@@ -4273,7 +4273,10 @@ hide this one and style something on top of it.  */
 .ideditor .feature-confidence-container {
     padding: 10px; 
 }
-/* Basics
+
+/* .display-control-feature_confidence > input{
+    transform: rotate(180deg);
+} *//* Basics
 ------------------------------------------------------- */
 /* the root element of iD */
 .ideditor {

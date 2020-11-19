@@ -334,9 +334,9 @@ export default {
                     parseXML(ds, dom, tile, function(err, results) {
                         if (err) return;
                         results.forEach((result) => {
-                            // if (result.type === 'way') {
+                            if (result.type === 'way') {
                                 result.ml_confidence = Math.random();
-                            // }
+                            }
                         });
                         graph.rebase(results, [graph], true);
                         tree.rebase(results, true);

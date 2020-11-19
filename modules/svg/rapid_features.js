@@ -242,15 +242,17 @@ export function svgRapidFeatures(projection, context, dispatch) {
     if (context.map().zoom() >= context.minEditableZoom()) {
       /* Facebook AI/ML */
       if (dataset.service === 'fbml') {
-        const featureConfidence = prefs('rapid-internal-feature.featureConfidence');
+        const featureConfidence = prefs('feature_confidence');
         service.loadTiles(internalID, projection, rapidContext.getTaskExtent());
         let pathData = service
           .intersects(internalID, context.map().extent())
           .filter(d => d.type === 'way' && !_actioned.has(d.id) && !_actioned.has(d.__origid__) )  // see onHistoryRestore()
           .filter(getPath)
-          .filter(v => {
-            return v.ml_confidence && v.ml_confidence >= rapidContext.featureConfidence();
-            // return v.ml_confidence && v.ml_confidence >= featureConfidence;
+          .filter(d => {
+            if (d.type !== 'way') {
+              return true;
+            }
+            return d.ml_confidence && d.ml_confidence >= featureConfidence;
           }); //ONLY CONFIDENT
 
         // fb_ai service gives us roads and buildings together,

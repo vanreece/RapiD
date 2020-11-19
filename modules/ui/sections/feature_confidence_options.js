@@ -23,6 +23,10 @@ export function uiSectionFeatureConfidenceOptions(context) {
 
     var _featureConfidence = _storedConfidence !== null ? (+_storedConfidence) : _defaultConfidence;
 
+    if (_storedConfidence === null) {
+        prefs('feature_confidence', _defaultConfidence);
+    }
+
     function clamp(x, min, max) {
         return Math.max(min, Math.min(x, max));
     }
@@ -36,7 +40,6 @@ export function uiSectionFeatureConfidenceOptions(context) {
 
         _featureConfidence = val;
         prefs('feature_confidence', val);
-        context.rapidContext().featureConfidence(_featureConfidence);
         //Update the render
         context.map().pan([0,0]);
 
@@ -98,12 +101,28 @@ export function uiSectionFeatureConfidenceOptions(context) {
             .property('value', _featureConfidence);
 
         container.selectAll('.display-option-value')
-            .text(function() { return Math.floor(_featureConfidence * 100) + '%'; });
+            .text(function() {
+                const tolerance = Math.floor(_featureConfidence * 100);
+                switch (tolerance) {
+                    case 20:
+                        return 'Low';
+                    case 40:
+                        return 'Lowish';
+                    case 60:
+                        return 'Medium';
+                    case 80:
+                        return 'Highish';
+                    case 100:
+                        return 'High';
+                    default:
+                        return '¿Que?';
+                }
+            });
 
         container.selectAll('.display-option-reset')
             .classed('disabled', function() { return _featureConfidence === _defaultConfidence; });
         
-        context.rapidContext().featureConfidence(_featureConfidence);
+        prefs('feature_confidence', _featureConfidence);
     }
 
     return section;
