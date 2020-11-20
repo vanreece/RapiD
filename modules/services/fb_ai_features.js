@@ -333,6 +333,7 @@ export default {
                     if (!dom) return;
                     parseXML(ds, dom, tile, function(err, results) {
                         if (err) return;
+                        debugger;
                         results.forEach((result) => {
                             if (result.type === 'way') {
                                 result.ml_confidence = Math.random();

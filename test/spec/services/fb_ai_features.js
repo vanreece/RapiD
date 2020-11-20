@@ -1,10 +1,3 @@
-// import { expect } from 'chai';
-// import { serviceFbAIFeatures } from '../../../modules/services';
-
-// const { expect } = require("chai");
-
-// const { identity } = require("lodash-es");
-
 describe('iD.serviceFbAiFeatures', function () {
     var dimensions = [64, 64];
     var context, server, fbML;
@@ -49,7 +42,10 @@ describe('iD.serviceFbAiFeatures', function () {
                 // expect(server.requests().length).to.eql(1); 
                 expect(true).to.be.true;
                 // Also verify that the right data is loaded
-                fbML.graph('TheNiftyDataset');
+                var graph = fbML.graph('TheNiftyDataset');
+                var transientKeys = Object.keys(graph.transients);
+                expect(transientKeys.length).to.equal(1);
+                expect(transientKeys[0]).to.equal('w-223422622090188');
                 done();
             });
 
