@@ -79,7 +79,7 @@ export function uiSectionFeatureConfidenceOptions(context) {
             .attr('type', 'range')
             .attr('min', _minVal)
             .attr('max', _maxVal)
-            .attr('step', '0.20')
+            .attr('step', '0.01')
             .property('value', _featureConfidence)
             .on('input', function() {
                 var val = d3_select(this).property('value');
@@ -102,6 +102,7 @@ export function uiSectionFeatureConfidenceOptions(context) {
 
         container.selectAll('.display-option-value')
             .text(function() {
+                return _featureConfidence;
                 const tolerance = Math.floor(_featureConfidence * 100);
                 switch (tolerance) {
                     case 20:

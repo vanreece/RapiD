@@ -252,7 +252,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
             if (d.type !== 'way') {
               return true;
             }
-            return d.ml_confidence && d.ml_confidence >= featureConfidence;
+            return d.__fb_meta__.fbConfidence && d.__fb_meta__.fbConfidence >= featureConfidence;
           }); //ONLY CONFIDENT
 
         // fb_ai service gives us roads and buildings together,
