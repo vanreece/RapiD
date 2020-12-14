@@ -15,7 +15,7 @@ export function uiSectionFeatureConfidenceOptions(context) {
         .title(t('background.feature_confidence'))
         .disclosureContent(renderDisclosureContent);
 
-    var _minVal = 0.20;
+    var _minVal = 0.0;
     var _maxVal = 1;
     var _storedConfidence = prefs('feature_confidence');
     var _sliders = ['feature_confidence'];
@@ -24,7 +24,7 @@ export function uiSectionFeatureConfidenceOptions(context) {
     var _featureConfidence = _storedConfidence !== null ? (+_storedConfidence) : _defaultConfidence;
 
     if (_storedConfidence === null) {
-        prefs('feature_confidence', _defaultConfidence);
+        prefs('feature_confidence', 1 - _defaultConfidence);
     }
 
     function clamp(x, min, max) {
@@ -38,8 +38,8 @@ export function uiSectionFeatureConfidenceOptions(context) {
 
         val = clamp(val, _minVal, _maxVal);
 
-        _featureConfidence = val;
-        prefs('feature_confidence', val);
+        _featureConfidence = 1 - val;
+        prefs('feature_confidence', _featureConfidence);
         //Update the render
         context.map().pan([0,0]);
 
@@ -80,7 +80,7 @@ export function uiSectionFeatureConfidenceOptions(context) {
             .attr('min', _minVal)
             .attr('max', _maxVal)
             .attr('step', '0.01')
-            .property('value', _featureConfidence)
+            .property('value', 1 - _featureConfidence)
             .on('input', function() {
                 var val = d3_select(this).property('value');
                 updateValue(val);
@@ -92,17 +92,17 @@ export function uiSectionFeatureConfidenceOptions(context) {
             .attr('class', function(d) { return 'display-option-reset display-option-reset-' + d; })
             .on('click', function() {
                 if (d3_event.button !== 0) return;
-                updateValue(_defaultConfidence);
+                updateValue(1 - _defaultConfidence);
             })
             .call(svgIcon('#iD-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
 
         container = selection.selectAll('.feature-confidence-container');
         container.selectAll('.display-option-input')
-            .property('value', _featureConfidence);
+            .property('value', 1 - _featureConfidence);
 
         container.selectAll('.display-option-value')
             .text(function() {
-                return _featureConfidence;
+                return Math.round(_featureConfidence * 100) / 100;
                 const tolerance = Math.floor(_featureConfidence * 100);
                 switch (tolerance) {
                     case 20:
