@@ -103,21 +103,6 @@ export function uiSectionFeatureConfidenceOptions(context) {
         container.selectAll('.display-option-value')
             .text(function() {
                 return Math.round(_featureConfidence * 100) / 100;
-                const tolerance = Math.floor(_featureConfidence * 100);
-                switch (tolerance) {
-                    case 20:
-                        return 'Low';
-                    case 40:
-                        return 'Lowish';
-                    case 60:
-                        return 'Medium';
-                    case 80:
-                        return 'Highish';
-                    case 100:
-                        return 'High';
-                    default:
-                        return '¿Que?';
-                }
             });
 
         container.selectAll('.display-option-reset')

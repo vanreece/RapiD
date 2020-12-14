@@ -41,7 +41,6 @@ describe('iD.serviceFbAiFeatures', function () {
             var graph = fbML.graph('TheNiftyDataset');
             expect(graph.hasEntity('w-223422622090188')).to.be.ok;
             var tags = graph.entity('w-223422622090188').tags;
-            debugger;
             expect(tags.highway).to.be.ok;
             expect(tags.highway).to.equal('residential');
             expect(tags.source).to.be.ok;

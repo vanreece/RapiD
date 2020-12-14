@@ -136,7 +136,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     featureInfo = featureInfo
       .merge(featureInfoEnter)
       .style('background', d => d)
-      .style('color', d => getBrightness(d) > 140.5 ? '#333' : '#fff')
+      .style('color', d => getBrightness(d) > 140.5 ? '#333' : '#fff');
   }
 
 
