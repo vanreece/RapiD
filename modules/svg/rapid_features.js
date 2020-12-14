@@ -252,8 +252,9 @@ export function svgRapidFeatures(projection, context, dispatch) {
             if (d.type !== 'way') {
               return true;
             }
+            // Only show roads that exceed our feature confidence threshold
             return d.__fb_meta__.fbConfidence && d.__fb_meta__.fbConfidence >= featureConfidence;
-          }); //ONLY CONFIDENT
+          });
 
         // fb_ai service gives us roads and buildings together,
         // so filter further according to which dataset we're drawing
