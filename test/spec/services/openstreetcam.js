@@ -13,12 +13,9 @@ describe('iD.serviceOpenstreetcam', function() {
     beforeEach(function() {
         context = iD.coreContext().assetPath('../dist/').init();
         context.projection
-            .scale(iD.geoZoomToScale(20))
-            .translate([55212042.434589595, 33248879.510193843])  // -74.0444216, 40.6694299
+            .scale(iD.geoZoomToScale(14))
+            .translate([-116508, 0])  // 10,0
             .clipExtent([[0,0], dimensions]);
-            // .scale(iD.geoZoomToScale(14))
-            // .translate([-116508, 0])  // 10,0
-            // .clipExtent([[0,0], dimensions]);
 
         server = window.fakeFetch().create();
         openstreetcam = iD.services.openstreetcam;
