@@ -107,7 +107,7 @@ export function uiSectionFeatureConfidenceOptions(context) {
 
         container.selectAll('.display-option-reset')
             .classed('disabled', function() { return _featureConfidence === _defaultConfidence; });
-        
+
         prefs('feature_confidence', _featureConfidence);
     }
 

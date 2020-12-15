@@ -54,19 +54,19 @@ describe('iD.serviceFbAiFeatures', function () {
 
         fbML.loadTiles('TheNiftyDataset', context.projection);
 
-        var xmlResponse = '<?xml version="1.0"?>\n' + 
-        '<osm attribution="http://www.openstreetmap.org/copyright" copyright="OpenStreetMap and contributors" generator="fb_conflation_service" version="0.6">\n' + 
-        '  <bounds maxlat="-1.3621863466646" maxlon="38.375234137787" minlat="-1.3676579520968" minlon="38.369760979401"/>\n' + 
-        '  <node action="modify" id="-719901218790572" lat="-1.3669929" lon="38.3710005" visible="true"/>\n' + 
-        '  <node action="modify" id="-111796553805975" lat="-1.3673308" lon="38.3709146" visible="true"/>\n' + 
-        '  <way action="modify" id="-223422622090188" visible="true">\n' + 
-        '    <nd ref="-111796553805975"/>\n' + 
-        '    <nd ref="-719901218790572"/>\n' + 
-        '    <tag k="highway" v="residential"/>\n' + 
-        '    <tag k="source" v="maxar"/>\n' + 
-        '  </way>\n' + 
+        var xmlResponse = '<?xml version="1.0"?>\n' +
+        '<osm attribution="http://www.openstreetmap.org/copyright" copyright="OpenStreetMap and contributors" generator="fb_conflation_service" version="0.6">\n' +
+        '  <bounds maxlat="-1.3621863466646" maxlon="38.375234137787" minlat="-1.3676579520968" minlon="38.369760979401"/>\n' +
+        '  <node action="modify" id="-719901218790572" lat="-1.3669929" lon="38.3710005" visible="true"/>\n' +
+        '  <node action="modify" id="-111796553805975" lat="-1.3673308" lon="38.3709146" visible="true"/>\n' +
+        '  <way action="modify" id="-223422622090188" visible="true">\n' +
+        '    <nd ref="-111796553805975"/>\n' +
+        '    <nd ref="-719901218790572"/>\n' +
+        '    <tag k="highway" v="residential"/>\n' +
+        '    <tag k="source" v="maxar"/>\n' +
+        '  </way>\n' +
         '</osm>\n';
-        
+
         server.respondWith('GET', /ml_roads/,
             [200, { 'Content-Type': 'text/xml; charset=UTF-8' }, xmlResponse]);
         server.respond();
