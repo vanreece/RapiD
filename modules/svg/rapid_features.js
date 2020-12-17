@@ -253,7 +253,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
               return true;
             }
             // Only show roads that exceed our feature confidence threshold
-            return d.__fb_meta__.fbConfidence && d.__fb_meta__.fbConfidence >= featureConfidence;
+            return d.__fbMeta__.fbConfidence && d.__fbMeta__.fbConfidence >= featureConfidence;
           });
 
         // fb_ai service gives us roads and buildings together,

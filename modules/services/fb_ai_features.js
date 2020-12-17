@@ -202,7 +202,7 @@ function parseXML(dataset, xml, tile, callback, options) {
             __origid__: origUid,
             __service__: 'fbml',
             __datasetid__: dataset.id,
-            __fb_meta__: fbMeta,
+            __fbMeta__: fbMeta,
         };
         return Object.assign(entity, meta);
     }

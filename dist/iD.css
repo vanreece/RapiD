@@ -4389,9 +4389,7 @@ hide this one and style something on top of it.  */
 }
 
 .ideditor .display-control-feature_confidence > input{
-    -webkit-transform: rotate(180deg);
-        -ms-transform: rotate(180deg);
-            transform: rotate(180deg);
+    direction: rtl;
 }/* Basics
 ------------------------------------------------------- */
 /* the root element of iD */

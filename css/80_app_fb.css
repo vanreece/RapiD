@@ -938,5 +938,5 @@ li.best > label > span.best > svg {
 }
 
 .display-control-feature_confidence > input{
-    transform: rotate(180deg);
+    direction: rtl;
 }
