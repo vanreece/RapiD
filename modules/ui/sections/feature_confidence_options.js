@@ -22,13 +22,13 @@ export function uiSectionFeatureConfidenceOptions(context) {
     let _step = prefs('feature_confidence_step');
     let _blueOnLeft = prefs('feature_confidence_blueOnLeft');
     let _lowOnLeft = prefs('feature_confidence_lowOnLeft');
-    let _value = prefs('feature_confidence_value');
+    let _featureConfidenceThreshold = prefs('feature_confidence_threshold');
 
     // Set up defaults for unset values
     _minVal = _minVal !== null ? _minVal : 0;
     _maxVal = _maxVal !== null ? _maxVal : 1;
     _step = _step !== null ? _step : 0.1;
-    _value = _value !== null ? _value : 0;
+    _featureConfidenceThreshold = _featureConfidenceThreshold !== null ? _featureConfidenceThreshold : 0;
     _blueOnLeft = _blueOnLeft !== null ? _blueOnLeft : true;
     _lowOnLeft = _lowOnLeft !== null ? _lowOnLeft : true;
 
@@ -38,7 +38,7 @@ export function uiSectionFeatureConfidenceOptions(context) {
     prefs('feature_confidence_step', _step);
     prefs('feature_confidence_blueOnLeft', _blueOnLeft);
     prefs('feature_confidence_lowOnLeft', _lowOnLeft);
-    prefs('feature_confidence_value', _value);
+    prefs('feature_confidence_threshold', _featureConfidenceThreshold);
 
     const _sliderToValue = d3_scaleLinear().domain([0,1]).range([-1,1]).clamp(true);
 
@@ -75,7 +75,8 @@ export function uiSectionFeatureConfidenceOptions(context) {
         const slider = d3_select('.display-option-input');
 
         // Update the value from existing slider scale
-        _value = _sliderToValue(slider.property('value'));
+        _featureConfidenceThreshold = _sliderToValue(slider.property('value'));
+        prefs('feature_confidence_threshold', _featureConfidenceThreshold);
 
         // Update the scale
         if (_lowOnLeft !== _blueOnLeft) {
@@ -91,13 +92,15 @@ export function uiSectionFeatureConfidenceOptions(context) {
             });
 
         slider.attr('step', _step);
-        slider.property('value', _sliderToValue.invert(_value));
+        slider.property('value', _sliderToValue.invert(_featureConfidenceThreshold));
 
         // Update the display
         selection.selectAll('.display-option-value')
             .text(function() {
-                return Math.round(_value * 100) / 100;
+                return Math.round(_featureConfidenceThreshold * 100) / 100;
             });
+        // Re-render the map
+        context.map().pan([0,0]);
     }
 
     function renderDisclosureContent(selection) {
@@ -129,12 +132,13 @@ export function uiSectionFeatureConfidenceOptions(context) {
 
         slidersEnter
             .append('span')
-            .text('Blue on left: ')
+            .text('Blue on left')
             .append('input')
             .attr('type', 'checkbox')
             .attr('checked', 'true')
             .on('input', function() {
                 _blueOnLeft = d3_select(this).property('checked');
+                prefs('feature_confidence_blueOnLeft', _blueOnLeft);
                 updateSliderUI(selection);
             });
 
@@ -143,69 +147,109 @@ export function uiSectionFeatureConfidenceOptions(context) {
 
         slidersEnter
             .append('span')
-            .text('Low on left: ')
+            .text('Low on left')
             .append('input')
             .attr('type', 'checkbox')
             .attr('checked', 'true')
             .on('input', function() {
                 _lowOnLeft = d3_select(this).property('checked');
+                prefs('feature_confidence_lowOnLeft', _lowOnLeft);
                 updateSliderUI(selection);
             });
 
         slidersEnter
             .append('br');
 
-        slidersEnter
-            .append('span')
-            .text('Min Value: ')
+        const controls = slidersEnter
+            .append('div')
+            .style('display', 'flex')
+            .style('flex-direction', 'column');
+
+        let row = controls
+            .append('div')
+            .style('display', 'flex')
+            .style('align-items', 'center');
+        
+        row
+            .append('div')
+            .text('Min Value:');
+
+        row
             .append('input')
             .attr('type', 'text')
             .attr('value', _minVal)
+            .style('margin', '5px')
             .on('change', function() {
                 _minVal = d3_select(this).property('value');
+                prefs('feature_confidence_minVal', _minVal);
                 updateSliderUI(selection);
             });
 
-        slidersEnter
-            .append('br');
-        
-        slidersEnter
-            .append('span')
-            .text('Max Value: ')
+        // controls
+        //     .append('br');
+        row = controls
+            .append('div')
+            .style('display', 'flex')
+            .style('align-items', 'center');
+
+        row
+            .append('div')
+            .text('Max Value:');
+
+        row
             .append('input')
             .attr('type', 'text')
             .attr('value', _maxVal)
+            .style('margin', '5px')
             .on('change', function() {
                 _maxVal = d3_select(this).property('value');
+                prefs('feature_confidence_maxVal', _maxVal);
                 updateSliderUI(selection);
             });
 
-        slidersEnter
-            .append('br');
+        // slidersEnter
+        //     .append('br');
 
-        slidersEnter
-            .append('span')
-            .text('Resolution: ')
+        row = controls
+            .append('div')
+            .style('display', 'flex')
+            .style('align-items', 'center');
+
+        row
+            .append('div')
+            .text('Resolution:');
+        row
             .append('input')
             .attr('type', 'text')
-            .attr('value', 0.1)
+            .attr('value', _step)
+            .style('margin', '5px')
             .on('change', function() {
                 const fullRange = _maxVal - _minVal;
                 const stepCount = fullRange / d3_select(this).property('value');
                 _step = 1 / (stepCount);
+                prefs('feature_confidence_step', _step);
                 updateSliderUI(selection);
             });
 
-        slidersEnter
-            .append('br');
+        // slidersEnter
+        //     .append('br');
 
-        slidersEnter
-            .append('span')
-            .text('Range slider:')
+        row = controls
+            .append('div')
+            .style('display', 'flex')
+            .style('align-items', 'center');
+
+        row
+            .append('div')
+            .text('Range slider:');
+        
+        row
             .append('input')
             .attr('type', 'range')
-            .attr('min', 0)
-            .attr('max', 1)
+            .attr('min', _minVal)
+            .attr('max', _maxVal)
+            .attr('height', '8px')
+            .style('margin', '5px')
             // .attr('class', 'rangeSlider')
             .attr('class', function(d) { return 'display-option-input display-option-input-' + d; })
             .on('input', function() {

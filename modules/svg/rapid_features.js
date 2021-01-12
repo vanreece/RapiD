@@ -242,7 +242,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
     if (context.map().zoom() >= context.minEditableZoom()) {
       /* Facebook AI/ML */
       if (dataset.service === 'fbml') {
-        const featureConfidence = prefs('feature_confidence');
+        const featureConfidenceThreshold = prefs('feature_confidence_threshold');
         service.loadTiles(internalID, projection, rapidContext.getTaskExtent());
         let pathData = service
           .intersects(internalID, context.map().extent())
@@ -253,7 +253,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
               return true;
             }
             // Only show roads that exceed our feature confidence threshold
-            return d.__fbMeta__.fbConfidence && d.__fbMeta__.fbConfidence >= featureConfidence;
+            return d.__fbMeta__.fbConfidence && d.__fbMeta__.fbConfidence >= featureConfidenceThreshold;
           });
 
         // fb_ai service gives us roads and buildings together,
