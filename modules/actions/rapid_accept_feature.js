@@ -63,7 +63,7 @@ function removeMetadata(entity) {
     delete entity.__origid__;
     delete entity.__service__;
     delete entity.__datasetid__;
-    // delete entity.__fbMeta__;
+    delete entity.__fbMeta__;
     delete entity.tags.conn;
     delete entity.tags.dupe;
 }
