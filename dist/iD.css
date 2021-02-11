@@ -4386,10 +4386,6 @@ hide this one and style something on top of it.  */
 
 .ideditor .feature-confidence-container {
     padding: 10px; 
-}
-
-.ideditor .display-control-feature_confidence > input{
-    direction: rtl;
 }/* Basics
 ------------------------------------------------------- */
 /* the root element of iD */

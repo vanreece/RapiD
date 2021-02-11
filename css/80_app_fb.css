@@ -936,7 +936,3 @@ li.best > label > span.best > svg {
 .feature-confidence-container {
     padding: 10px; 
 }
-
-.display-control-feature_confidence > input{
-    direction: rtl;
-}
